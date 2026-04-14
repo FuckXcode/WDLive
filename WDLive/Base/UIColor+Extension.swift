@@ -19,6 +19,13 @@ extension UIColor {
         self.init(red: r/255.0, green: g/255.0, blue: b/255.0, alpha: alpha)
     }
 
+    convenience init(hex: UInt32, alpha: CGFloat = 1.0) {
+        let r = CGFloat((hex >> 16) & 0xFF)
+        let g = CGFloat((hex >> 8) & 0xFF)
+        let b = CGFloat(hex & 0xFF)
+        self.init(r, g, b, alpha: alpha)
+    }
+
     convenience init?(_ hex: String) {
 
         // 1.判断字符串长度

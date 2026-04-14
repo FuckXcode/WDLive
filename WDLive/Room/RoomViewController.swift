@@ -13,9 +13,10 @@ class RoomViewController: UIViewController {
     @IBOutlet weak var giftHitsContainerView: GiftHitsContainerView!
     let cell = GiftHitsCellView.loadNibView()
 
+    private let livePlayerView = LivePlayerView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .randomColor
         setupUI()
     }
 
@@ -26,16 +27,19 @@ class RoomViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        livePlayerView.play(url: LivePlayerView.defaultHLSURL)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        livePlayerView.stop()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     func setupUI() {
-//        cell.frame = CGRect(x: 0, y: 100, width: 300, height: 50)
-//        view.addSubview(cell)
+        livePlayerView.frame = view.bounds
+        livePlayerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.insertSubview(livePlayerView, at: 0)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

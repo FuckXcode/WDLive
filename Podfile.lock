@@ -1,11 +1,15 @@
 PODS:
   - Alamofire (5.10.1)
+  - HaishinKit (1.9.9):
+    - Logboard (~> 2.5.0)
+  - Logboard (2.5.0)
   - SnapKit (5.7.1)
   - SwiftLint (0.46.3)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
   - Alamofire
+  - HaishinKit (~> 1.9)
   - SnapKit
   - SwiftLint (= 0.46.3)
   - SwiftyJSON (~> 4.0)
@@ -13,16 +17,20 @@ DEPENDENCIES:
 SPEC REPOS:
   https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
     - Alamofire
+    - HaishinKit
+    - Logboard
     - SnapKit
     - SwiftLint
     - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: 840d2a1ad82355b536ec6ba5f97e5bfa54600ca3
+  HaishinKit: 3995d63c0bf8795dcc4d7db1e490270899bc3a03
+  Logboard: 4674a3d86681539a0ad1fca528d888b90871e268
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   SwiftLint: ae76d82f056734f853c8cd0371503252c606c482
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: 7104bec015fcf9453a93ded0410324508573c6d0
+PODFILE CHECKSUM: ebaf18986de405b7b82b418a1d08804570364467
 
 COCOAPODS: 1.16.2

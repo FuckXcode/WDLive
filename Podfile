@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '13.0'
 
 source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
 
@@ -22,5 +22,6 @@ target 'WDLive' do
   pod 'Alamofire'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'SwiftLint', '= 0.46.3'
+  pod 'HaishinKit', '~> 1.9'
 
 end

@@ -1,0 +1,14 @@
+# Xcode user-specific files
+xcuserdata/
+*.xcuserstate
+*.xcbkptlist
+
+# Pods
+Pods/
+
+# Build
+build/
+DerivedData/
+
+# CocoaPods
+*.xcworkspace/xcuserdata

@@ -81,7 +81,7 @@ extension RoomViewController {
                 }
             }
         case 1:
-            break
+            showRedPackagePopupDemo()
         case 2:
             break
         case 3:

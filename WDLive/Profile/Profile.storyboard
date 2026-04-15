@@ -39,6 +39,7 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="FL0-CI-dek"/>
+                        <!-- Root view controller set to ProfileViewController programmatically -->
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3zX-4c-y7u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

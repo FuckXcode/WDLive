@@ -13,6 +13,9 @@ final class SettingsViewController: UITableViewController {
 
     private enum GeneralRow: Int, CaseIterable {
         case clearCache
+        case about
+        case version
+        case feedback
     }
 
     private var cacheSizeText: String = "计算中..."
@@ -21,6 +24,7 @@ final class SettingsViewController: UITableViewController {
         super.viewDidLoad()
         title = "设置"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "rightDetail")
         fetchCacheSize()
     }
 
@@ -63,6 +67,22 @@ final class SettingsViewController: UITableViewController {
                 cell.detailTextLabel?.text = cacheSizeText
                 cell.accessoryType = .none
                 cell.selectionStyle = .default
+            case .about:
+                cell.textLabel?.text = "关于"
+                cell.detailTextLabel?.text = ""
+                cell.accessoryType = .disclosureIndicator
+            case .version:
+                cell.textLabel?.text = "版本号"
+                if let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                    cell.detailTextLabel?.text = ver
+                } else {
+                    cell.detailTextLabel?.text = "1.0"
+                }
+                cell.accessoryType = .none
+            case .feedback:
+                cell.textLabel?.text = "反馈"
+                cell.detailTextLabel?.text = ""
+                cell.accessoryType = .disclosureIndicator
             }
         }
         return cell
@@ -75,31 +95,66 @@ final class SettingsViewController: UITableViewController {
             switch GeneralRow(rawValue: indexPath.row)! {
             case .clearCache:
                 confirmClearCache()
+            case .about:
+                showAbout()
+            case .version:
+                break
+            case .feedback:
+                showFeedback()
             }
         }
+    }
+
+    private func showAbout() {
+        let about = "WDLive 是一个演示直播 App，包含播放、聊天与礼物动画示例。"
+        let vc = UIAlertController(title: "关于 WDLive", message: about, preferredStyle: .alert)
+        vc.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
+        present(vc, animated: true, completion: nil)
+    }
+
+    private func showFeedback() {
+        let vc = UIAlertController(title: "反馈", message: "请通过发送邮件到 support@example.com 提交反馈。", preferredStyle: .alert)
+        vc.addAction(UIAlertAction(title: "确定", style: .default, handler: nil))
+        present(vc, animated: true, completion: nil)
     }
 
     private func confirmClearCache() {
         let alert = UIAlertController(title: "清理缓存", message: "确定要清理缓存吗？", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "确定", style: .destructive, handler: { _ in
-            self.clearCache()
+            self.clearCacheWithSpinner()
         }))
         present(alert, animated: true, completion: nil)
     }
 
-    private func clearCache() {
-        let hud = UIAlertController(title: nil, message: "正在清理...", preferredStyle: .alert)
-        present(hud, animated: true, completion: nil)
+    private func clearCacheWithSpinner() {
+        // Show non-blocking spinner overlay
+        let spinnerVC = UIAlertController(title: nil, message: "正在清理...\n\n", preferredStyle: .alert)
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        spinnerVC.view.addSubview(indicator)
+        NSLayoutConstraint.activate([
+            indicator.centerXAnchor.constraint(equalTo: spinnerVC.view.centerXAnchor),
+            indicator.bottomAnchor.constraint(equalTo: spinnerVC.view.bottomAnchor, constant: -20)
+        ])
+        indicator.startAnimating()
+        present(spinnerVC, animated: true, completion: nil)
+
         CacheHelper.shared.clearCache { [weak self] success in
-            hud.dismiss(animated: true) {
+            spinnerVC.dismiss(animated: true) {
                 guard let self = self else { return }
                 let msg = success ? "清理完成" : "清理失败"
-                let ok = UIAlertController(title: nil, message: msg, preferredStyle: .alert)
-                ok.addAction(UIAlertAction(title: "好的", style: .default, handler: { _ in
-                    self.fetchCacheSize()
-                }))
-                self.present(ok, animated: true, completion: nil)
+                self.showTransientToast(message: msg)
+                self.fetchCacheSize()
+            }
+        }
+    }
+
+    private func showTransientToast(message: String) {
+        let toast = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        present(toast, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                toast.dismiss(animated: true, completion: nil)
             }
         }
     }
